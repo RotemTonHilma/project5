@@ -5,7 +5,7 @@ import Home from "./pages/Home.jsx";
 import Register from "./pages/login/Register.jsx";
 import UserLayout from "./components/UserLayout";
 import Info from "./pages/Info.jsx";
-import Todos from "./pages/todos/Todos.jsx";
+import TodosDisplay from "./pages/todos/TodosDisplay.jsx";
 import Posts from "./pages/posts/Posts.jsx";
 import Albums from "./pages/albums/Albums.jsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.jsx";
@@ -31,7 +31,7 @@ function App() {
                             <Route index element={<Home />} />
                             <Route path="home" element={<Home />} />
                             <Route path="info" element={<Info />} />
-                            <Route path="todos" element={<Todos />} />
+                            <Route path="todos" element={<TodosDisplay />} />
                             <Route path="posts" element={<Posts />} />
                             <Route path="albums" element={<Albums />} />
                         </Route>
