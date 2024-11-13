@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
-import { LoggedUserContext } from "../../context/LoggedUserContext";
+import { useLoggedUser } from "../../context/LoggedUserContext";
 import { useNavigate } from "react-router-dom";
 import { fetchUsers, userFromArray } from "../../utils";
 
 function Login() {
     const [inputs, setInputs] = useState({});
-    const { loggedUser, setLoggedUser } = useContext(LoggedUserContext);
+    const { loggedUser, setLoggedUser } = useLoggedUser();
     const navigate = useNavigate();
 
     function handleChange(e) {

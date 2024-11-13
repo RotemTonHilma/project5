@@ -5,6 +5,7 @@ export default function UserLayout() {
     return (
         <>
             <Navbar />
+            <br />
             <Outlet />
         </>
     );
