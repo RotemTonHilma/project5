@@ -1,3 +1,4 @@
+
 export async function fetchUsers() {
     try {
         const res = await fetch("http://localhost:3000/users");
@@ -42,4 +43,25 @@ export async function addUser(newUser, nextId) {
         console.log(err);
         return false;
     }
+}
+
+
+export function searchArr(arr, filters) {
+    //array of objects with keys (strings)
+    return arr.filter((obj) => {
+        let flag = true;
+        for (let [key, value] of Object.entries(filters)) {
+            if (value === "") continue;
+            if (!obj[key].toString().includes(value.toString())) flag = false;
+        }
+        return flag;
+    });
+}
+
+export function createShowingObject(arr) {
+    const sObj = {};
+    for (let i in arr) {
+        sObj[arr[i].id] = false;
+    }
+    return sObj;
 }
