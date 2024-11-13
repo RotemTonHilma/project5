@@ -6,7 +6,7 @@ import Post from "./Post";
 
 export default function Posts() {
     const { loggedUser, setLoggedUser } = useContext(LoggedUserContext);
-    const { data: userPosts, setData: setUserPosts, isLoading } = useFetch(`http://localhost:3000/posts?userId=${loggedUser.id}`);
+    const { data: userPosts, isLoading, setData: setUserPosts } = useFetch(`http://localhost:3000/posts?userId=${loggedUser.id}`);
     const [postFilters, setPostFilters] = useState({ id: "", title: "" });
     const [showPostForm, setShowPostForm] = useState(false);
     const [newPost, setNewPost] = useState({});
