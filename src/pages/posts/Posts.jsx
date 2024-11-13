@@ -1,13 +1,15 @@
 import { LoggedUserContext } from "../../context/LoggedUserContext";
 import { useContext, useState } from "react";
 import { useFetch } from "../../custom-hooks/useFetch";
-import { searchArr } from "../../utils";
+import { searchArr, chooseNextId, addItem, fetchGet } from "../../utils";
 import Post from "./Post";
 
 export default function Posts() {
     const { loggedUser, setLoggedUser } = useContext(LoggedUserContext);
-    const { data: userPosts, isLoading } = useFetch(`http://localhost:3000/posts?userId=${loggedUser.id}`);
+    const { data: userPosts, setData: setUserPosts, isLoading } = useFetch(`http://localhost:3000/posts?userId=${loggedUser.id}`);
     const [postFilters, setPostFilters] = useState({ id: "", title: "" });
+    const [showPostForm, setShowPostForm] = useState(false);
+    const [newPost, setNewPost] = useState({});
 
     let filteredPosts = searchArr(userPosts, postFilters);
 
@@ -18,9 +20,32 @@ export default function Posts() {
         setPostFilters((prev) => ({ ...prev, [name]: value }));
     }
 
+    function handleNewPostChange(e) {
+        e.preventDefault();
+        const name = e.target.name;
+        const value = e.target.value;
+        setNewPost((prev) => ({ ...prev, [name]: value }));
+    }
+
     // function removePost(postId){
 
     // }
+
+    function toggleShowPostForm(e) {
+        setShowPostForm(prev => !prev);
+    }
+
+    async function addPost(e) {
+        e.preventDefault();
+        if (!newPost.title || !newPost.body) return;
+
+        const post = { ...newPost, userId: loggedUser.id }
+
+        const nextId = chooseNextId(await fetchGet("http://localhost:3000/posts"));
+        const addPostResponse = await addItem("http://localhost:3000/posts", post, nextId);
+        if (!addPostResponse) return;
+        setUserPosts(await fetchGet(`http://localhost:3000/posts?userId=${loggedUser.id}`));
+    }
 
     return (
         <>
@@ -45,6 +70,32 @@ export default function Posts() {
                     </label>
                 </div>
             }
+            <div>
+                <button onClick={toggleShowPostForm}>Add a post</button>
+                {showPostForm &&
+                    <form onSubmit={addPost}>
+                        <label>Title:
+                            <input
+                                type="text"
+                                name="title"
+                                value={newPost.title || ""}
+                                onChange={handleNewPostChange}
+                            />
+                        </label>
+                        <br />
+                        <label>Body:
+                            <input
+                                type="text"
+                                name="body"
+                                value={newPost.body || ""}
+                                onChange={handleNewPostChange}
+                            />
+                        </label>
+                        <br />
+                        <input type="submit" />
+                    </form>
+                }
+            </div>
             {!isLoading &&
                 searchArr(userPosts, postFilters).map((post) => {
                     return <Post

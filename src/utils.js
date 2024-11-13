@@ -10,6 +10,18 @@ export async function fetchUsers() {
     }
 }
 
+
+export async function fetchGet(url) {
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw Error("unable to obtain item");
+        const data = await res.json();
+        return data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export function userFromArray(userArray, userInputs) {
     return userArray.find((user) => user.username === userInputs.username && user.website === userInputs.website);
 }
@@ -24,18 +36,19 @@ export function chooseNextId(arr) {
     return parseInt(objMaxId.id) + 1;
 }
 
-export async function addUser(newUser, nextId) {
+export async function addItem(url, newItem, nextId) {
     try {
         if (typeof nextId !== "number") throw Error("Error with array. Ids not numbers");
-        newUser = { ...newUser, "id": nextId };
+        newItem = { ...newItem, "id": nextId };
 
         //add to database
-        const res = await fetch("http://localhost:3000/users", {
-            method: "POST",
-            body: JSON.stringify(newUser),
-            headers: { "Content-Type": "application/json" }
-        });
-        if (!res.ok) throw Error("Unable to add user");
+        const res = await fetch(url,
+            {
+                method: "POST",
+                body: JSON.stringify(newItem),
+                headers: { "Content-Type": "application/json" }
+            });
+        if (!res.ok) throw Error("Unable to add item");
         return true;
 
     }

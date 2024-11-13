@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { LoggedUserContext } from "../../context/LoggedUserContext";
-import { chooseNextId, fetchUsers, addUser } from "../../utils";
+import { chooseNextId, fetchUsers, addItem } from "../../utils";
 
 
 export default function RegDetails() {
@@ -26,7 +26,7 @@ export default function RegDetails() {
         const newUser = { ...location.state.initInputs, ...detailedInputs }
 
         //add to database
-        const addUserResponse = await addUser(newUser, nextId)
+        const addUserResponse = await addItem("http://localhost:3000/users", newUser, nextId)
         if (!addUserResponse) return;
 
         //add to logged user
