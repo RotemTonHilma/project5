@@ -10,7 +10,7 @@ import Posts from "./pages/posts/Posts.jsx";
 import Albums from "./pages/albums/Albums.jsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.jsx";
 import RegDetails from "./pages/login/RegDetails.jsx";
-
+import Photos from "./pages/albums/Photos.jsx"
 function App() {
   return (
     <>
@@ -35,7 +35,11 @@ function App() {
               <Route path="info" element={<Info />} />
               <Route path="todos" element={<Todos />} />
               <Route path="posts" element={<Posts />} />
-              <Route path="albums" element={<Albums />} />
+
+              <Route path="albums"  >
+                <Route index element={<Albums />} />
+                <Route path=":albumId/photos" element={<Photos />} />
+              </Route>
             </Route>
             <Route path="*" element={<h1>Error</h1>} />
           </Routes>

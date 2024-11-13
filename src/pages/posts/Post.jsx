@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import CommentSection from "./CommentSection";
 
 export default function Post({ post }) {
@@ -14,11 +14,11 @@ export default function Post({ post }) {
         setShowComments(prev => !prev);
     }
     return (
-        <p>
+        <div>
             <p>{post.id}. {post.title}</p>
             <button onClick={toggleSeeMore}>See More</button>
             {showMore && <p>{post.body} </p>}
             <button onClick={toggleShowComments}>Show Comments</button>
             {showComments && <CommentSection postId={post.id} />}
-        </p>);
+        </div>);
 }

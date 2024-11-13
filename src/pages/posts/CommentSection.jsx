@@ -11,7 +11,6 @@ export default function CommentSection({ postId }) {
                 const response = await fetch(`http://localhost:3000/comments?postId=${postId}`);
                 if (!response.ok) throw Error("unable to get comments");
                 setCommentsArr(await response.json());
-                console.log(commentsArr);
             }
             catch (err) {
                 console.log(err);

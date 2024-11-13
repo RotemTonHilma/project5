@@ -1,7 +1,7 @@
 import { LoggedUserContext } from "../../context/LoggedUserContext";
 import { useContext, useState } from "react";
 import { useFetch } from "../../custom-hooks/useFetch";
-import { searchArr, createShowingObject } from "../../utils";
+import { searchArr } from "../../utils";
 import Post from "./Post";
 
 export default function Posts() {
@@ -17,6 +17,10 @@ export default function Posts() {
         const value = e.target.value;
         setPostFilters((prev) => ({ ...prev, [name]: value }));
     }
+
+    // function removePost(postId){
+
+    // }
 
     return (
         <>
