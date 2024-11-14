@@ -4,11 +4,14 @@ import { useFetch } from "../../custom-hooks/useFetch";
 import { chooseNextId, sortData, updateDataBase } from "../../utils/utils";
 import Todo from "./Todo";
 import TodosButtons from "./TodosButtons";
+import { searchArr } from "../../utils";
 
 export default function TodosDisplay() {
     const { loggedUser } = useLoggedUser();
     const url = `http://localhost:3000/todos?userId=${loggedUser.id}`;
     const [SortMethod, setSortMethod] = useState("id");
+    const [todosFilters, setTodosFilters] = useState({ id: "", title: "", completed: "" });
+
 
     const { data: myTodos, isLoading, setData } = useFetch(url);
 
@@ -16,7 +19,17 @@ export default function TodosDisplay() {
     console.log("allTodos: ", allTodos);
 
     let sortedTodos;
-    if (!isLoading) sortedTodos = sortData(myTodos, SortMethod);
+    if (!isLoading) {
+        sortedTodos = sortData(myTodos, SortMethod);
+        sortedTodos = searchArr(sortedTodos, todosFilters);
+    }
+    function handleTodosFilterChange(e) {
+        e.preventDefault();
+        const name = e.target.name;
+        const value = e.target.value;
+        setTodosFilters((prev) => ({ ...prev, [name]: value }));
+    }
+
     console.log("sortedTodos: ", sortedTodos);
     const handleChangeSelect = (event) => setSortMethod(event.target.value);
 
@@ -56,7 +69,12 @@ export default function TodosDisplay() {
 
     return (
         <>
-            <TodosButtons SortMethod={SortMethod} handleChangeSelect={handleChangeSelect} addTodo={addTodo} />
+            <TodosButtons SortMethod={SortMethod}
+                handleChangeSelect={handleChangeSelect}
+                addTodo={addTodo}
+                handleTodosFilterChange={handleTodosFilterChange}
+                todosFilters={todosFilters}
+            />
 
             <ul>
                 {!isLoading &&
