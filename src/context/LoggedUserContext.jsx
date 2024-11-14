@@ -5,14 +5,19 @@ export const LoggedUserContext = createContext();
 
 export default function LoggedUserContextProvider({ children }) {
     const [loggedUser, setLoggedUser] = useState(null);
+    console.log("loggedUser: ", loggedUser);
     const { data: allUsers } = useFetch("http://localhost:3000/users");
     console.log("allUsers: ", allUsers);
 
     useEffect(() => {
+        console.log("in effect");
         const userId = localStorage.getItem("user");
-        if (userId) {
+        console.log("userId: ", userId);
+        if (JSON.parse(userId)) {
+            console.log("in if");
             setLoggedUser(allUsers.find((item) => item.id === userId));
         } else {
+            console.log("in else");
             setLoggedUser(false);
         }
     }, [allUsers]);

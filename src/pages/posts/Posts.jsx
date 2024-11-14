@@ -33,7 +33,7 @@ export default function Posts() {
     // }
 
     function toggleShowPostForm(e) {
-        setShowPostForm(prev => !prev);
+        setShowPostForm((prev) => !prev);
     }
 
     async function addPost(e) {
@@ -42,70 +42,52 @@ export default function Posts() {
 
         const nextId = chooseNextId(await fetchGet("http://localhost:3000/posts"));
 
-        const post = { ...newPost, userId: loggedUser.id, id: nextId }
-        await updateDataBase("http://localhost:3000/posts", { method: "POST", body: post, headers: { "Content-Type": "application/json" } })
+        const post = { ...newPost, userId: loggedUser.id, id: nextId };
+        await updateDataBase("http://localhost:3000/posts", { method: "POST", body: post, headers: { "Content-Type": "application/json" } });
         setUserPosts(await fetchGet(`http://localhost:3000/posts?userId=${loggedUser.id}`));
+        setShowPostForm(false);
+        setNewPost({});
     }
 
     return (
         <>
             <h1>Posts</h1>
-            {!isLoading &&
+            {!isLoading && (
                 <div>
                     <p>Search Posts</p>
-                    <label>Search by ID
-                        <input
-                            type="text"
-                            name="id"
-                            onChange={handlePostFilterChange}
-                            value={postFilters.id || ""} />
+                    <label>
+                        Search by ID
+                        <input type="text" name="id" onChange={handlePostFilterChange} value={postFilters.id || ""} />
                     </label>
                     <br />
-                    <label>Search by Title
-                        <input
-                            type="text"
-                            name="title"
-                            onChange={handlePostFilterChange}
-                            value={postFilters.title || ""} />
+                    <label>
+                        Search by Title
+                        <input type="text" name="title" onChange={handlePostFilterChange} value={postFilters.title || ""} />
                     </label>
                 </div>
-            }
+            )}
             <div>
                 <button onClick={toggleShowPostForm}>Add a post</button>
-                {showPostForm &&
+                {showPostForm && (
                     <form onSubmit={addPost}>
-                        <label>Title:
-                            <input
-                                type="text"
-                                name="title"
-                                value={newPost.title || ""}
-                                onChange={handleNewPostChange}
-                            />
+                        <label>
+                            Title:
+                            <input type="text" name="title" value={newPost.title || ""} onChange={handleNewPostChange} />
                         </label>
                         <br />
-                        <label>Body:
-                            <input
-                                type="text"
-                                name="body"
-                                value={newPost.body || ""}
-                                onChange={handleNewPostChange}
-                            />
+                        <label>
+                            Body:
+                            <input type="text" name="body" value={newPost.body || ""} onChange={handleNewPostChange} />
                         </label>
                         <br />
                         <input type="submit" />
                     </form>
-                }
+                )}
             </div>
             {!isLoading &&
                 searchArr(userPosts, postFilters).map((post) => {
-                    return <Post
-                        key={post.id}
-                        post={post}
-                    />
-                })
-            }
+                    return <Post key={post.id} post={post} />;
+                })}
         </>
-
-
     );
 }

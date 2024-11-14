@@ -12,7 +12,6 @@ export default function Albums() {
     const [showAlbumForm, setShowAlbumForm] = useState(false);
     const [newAlbum, setNewAlbum] = useState({});
 
-
     let filteredAlbums = searchArr(userAlbums, albumFilters);
 
     function handleAlbumFilterChange(e) {
@@ -30,7 +29,7 @@ export default function Albums() {
     }
 
     function toggleShowAlbumForm(e) {
-        setShowAlbumForm(prev => !prev);
+        setShowAlbumForm((prev) => !prev);
     }
 
     async function addAlbum(e) {
@@ -39,61 +38,49 @@ export default function Albums() {
 
         const nextId = chooseNextId(await fetchGet("http://localhost:3000/albums"));
 
-        const album = { ...newAlbum, userId: loggedUser.id, id: nextId }
-        await updateDataBase("http://localhost:3000/albums", { method: "POST", body: album, headers: { "Content-Type": "application/json" } })
+        const album = { ...newAlbum, userId: loggedUser.id, id: nextId };
+        await updateDataBase("http://localhost:3000/albums", { method: "POST", body: album, headers: { "Content-Type": "application/json" } });
         setUserAlbums(await fetchGet(`http://localhost:3000/albums?userId=${loggedUser.id}`));
+        setShowAlbumForm(false);
+        setNewAlbum({});
     }
 
     return (
         <>
             <h1>Albums</h1>
-            {!isLoading &&
+            {!isLoading && (
                 <div>
                     <p>Search Albums</p>
-                    <label>Search by ID
-                        <input
-                            type="text"
-                            name="id"
-                            onChange={handleAlbumFilterChange}
-                            value={albumFilters.id || ""} />
+                    <label>
+                        Search by ID
+                        <input type="text" name="id" onChange={handleAlbumFilterChange} value={albumFilters.id || ""} />
                     </label>
                     <br />
-                    <label>Search by Title
-                        <input
-                            type="text"
-                            name="title"
-                            onChange={handleAlbumFilterChange}
-                            value={albumFilters.title || ""} />
+                    <label>
+                        Search by Title
+                        <input type="text" name="title" onChange={handleAlbumFilterChange} value={albumFilters.title || ""} />
                     </label>
                 </div>
-            }
+            )}
 
             <div>
                 <button onClick={toggleShowAlbumForm}>Add an album</button>
-                {showAlbumForm &&
+                {showAlbumForm && (
                     <form onSubmit={addAlbum}>
-                        <label>Title:
-                            <input
-                                type="text"
-                                name="title"
-                                value={newAlbum.title || ""}
-                                onChange={handleNewAlbumChange}
-                            />
+                        <label>
+                            Title:
+                            <input type="text" name="title" value={newAlbum.title || ""} onChange={handleNewAlbumChange} />
                         </label>
                         <br />
                         <input type="submit" />
                     </form>
-                }
+                )}
             </div>
 
             {!isLoading &&
                 searchArr(userAlbums, albumFilters).map((album) => {
-                    return <Album
-                        key={album.id}
-                        album={album}
-                    />
-                })
-            }
+                    return <Album key={album.id} album={album} />;
+                })}
         </>
     );
 }

@@ -15,11 +15,10 @@ export default function Photos() {
     const [showPhotoForm, setShowPhotoForm] = useState(false);
     const [newPhoto, setNewPhoto] = useState({});
 
-
     function handleShowMorePhotos(e) {
         e.preventDefault();
         if (amountShowing >= photos.length) return;
-        setAmountShowing(prev => {
+        setAmountShowing((prev) => {
             return prev + 5;
         });
     }
@@ -32,7 +31,7 @@ export default function Photos() {
     }
 
     function toggleShowPhotoForm(e) {
-        setShowPhotoForm(prev => !prev);
+        setShowPhotoForm((prev) => !prev);
     }
 
     async function addPhoto(e) {
@@ -41,9 +40,11 @@ export default function Photos() {
 
         const nextId = chooseNextId(await fetchGet("http://localhost:3000/photos"));
 
-        const photo = { ...newPhoto, albumId: albumId, id: nextId }
-        await updateDataBase("http://localhost:3000/photos", { method: "POST", body: photo, headers: { "Content-Type": "application/json" } })
+        const photo = { ...newPhoto, albumId: albumId, id: nextId };
+        await updateDataBase("http://localhost:3000/photos", { method: "POST", body: photo, headers: { "Content-Type": "application/json" } });
         setPhotos(await fetchGet(`http://localhost:3000/photos?albumId=${albumId.id}`));
+        setShowPhotoForm(false);
+        setNewPhoto({});
     }
 
     return (
@@ -52,51 +53,34 @@ export default function Photos() {
 
             <div>
                 <button onClick={toggleShowPhotoForm}>Add a Photo</button>
-                {showPhotoForm &&
+                {showPhotoForm && (
                     <form onSubmit={addPhoto}>
-                        <label>Title:
-                            <input
-                                type="text"
-                                name="title"
-                                value={newPhoto.title || ""}
-                                onChange={handleNewPhotoChange}
-                            />
+                        <label>
+                            Title:
+                            <input type="text" name="title" value={newPhoto.title || ""} onChange={handleNewPhotoChange} />
                         </label>
                         <br />
-                        <label>URL:
-                            <input
-                                type="text"
-                                name="url"
-                                value={newPhoto.url || ""}
-                                onChange={handleNewPhotoChange}
-                            />
+                        <label>
+                            URL:
+                            <input type="text" name="url" value={newPhoto.url || ""} onChange={handleNewPhotoChange} />
                         </label>
                         <br />
-                        <label>Thumbnail URL:
-                            <input
-                                type="text"
-                                name="thumbnailUrl"
-                                value={newPhoto.thumbnailUrl || ""}
-                                onChange={handleNewPhotoChange}
-                            />
+                        <label>
+                            Thumbnail URL:
+                            <input type="text" name="thumbnailUrl" value={newPhoto.thumbnailUrl || ""} onChange={handleNewPhotoChange} />
                         </label>
                         <br />
                         <input type="submit" />
                     </form>
-                }
+                )}
             </div>
 
             <div className="photosContainer">
                 {!isLoading &&
                     photos.map((photo, idx) => {
-                        return idx <= amountShowing - 1 ?
-                            <img src={photo.thumbnailUrl}
-                                key={photo.id} />
-                            : null
-                    })
-                }
+                        return idx <= amountShowing - 1 ? <img src={photo.thumbnailUrl} key={photo.id} /> : null;
+                    })}
             </div>
-
 
             {amountShowing < photos.length && <button onClick={handleShowMorePhotos}>Show More</button>}
         </>
