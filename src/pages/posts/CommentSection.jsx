@@ -7,7 +7,6 @@ import { chooseNextId, updateDataBase } from "../../utils/utils";
 import { fetchGet } from "../../utils";
 
 
-
 export default function CommentSection({ postId }) {
 
     const { data: commentsArr, isLoading, setData: setCommentsArr } = useFetch(`http://localhost:3000/comments?postId=${postId}`);
