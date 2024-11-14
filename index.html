@@ -8,8 +8,18 @@
 </head>
 
 <body>
+  <img style="float:right" class="cat" src="./src/assets/media/5d8741d291364bdf63dd8c28f34101cf_t.jpeg" alt="8 bit cat"
+    width="100" onclick="meow('./src/assets/media/kitty-meow-85182.mp3')">
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
+  <script>
+    //cat audio
+    function meow(audioFile) {
+      new Audio(audioFile).play();
+    }
+
+  </script>
+
 </body>
 
 </html>
