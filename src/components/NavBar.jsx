@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
+import { useLoggedUser } from "../context/LoggedUserContext";
 
 export default function Navbar() {
+    const { loggedUser, setLogged, logout } = useLoggedUser();
     const activeStyle = {
         fontWeight: "bold",
         textDecoration: "underline",
@@ -23,7 +25,7 @@ export default function Navbar() {
             <NavLink style={({ isActive }) => (isActive ? activeStyle : null)} to={"albums"}>
                 Albums
             </NavLink>
-            <button>Logout</button>
+            <button onClick={logout}>Logout</button>
         </>
     );
 }

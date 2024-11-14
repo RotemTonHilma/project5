@@ -5,7 +5,7 @@ import { fetchUsers, userFromArray } from "../../utils";
 
 function Login() {
     const [inputs, setInputs] = useState({});
-    const { loggedUser, setLoggedUser } = useLoggedUser();
+    const { loggedUser, setLoggedUser, logout, login } = useLoggedUser();
     const navigate = useNavigate();
 
     function handleChange(e) {
@@ -24,7 +24,7 @@ function Login() {
             return;
         }
         localStorage.setItem("user", userInArray.id);
-        setLoggedUser(userInArray);
+        login();
         navigate(`/user/${userInArray.id}/home`);
     }
 
