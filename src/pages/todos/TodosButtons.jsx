@@ -31,6 +31,32 @@ export default function TodosButtons(props) {
                     </button>
                 </div>
             )}
+            <div>
+                <p>Search Todos</p>
+                <label>Search by ID
+                    <input
+                        type="text"
+                        name="id"
+                        onChange={props.handleTodosFilterChange}
+                        value={props.todosFilters.id || ""} />
+                </label>
+                <br />
+                <label>Search by Title
+                    <input
+                        type="text"
+                        name="title"
+                        onChange={props.handleTodosFilterChange}
+                        value={props.todosFilters.title || ""} />
+                </label>
+                <br />
+                <label>Search by Completed
+                    <input
+                        type="text"
+                        name="completed"
+                        onChange={props.handleTodosFilterChange}
+                        value={props.todosFilters.completed || ""} />
+                </label>
+            </div>
         </>
     );
 }
