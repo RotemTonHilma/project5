@@ -12,6 +12,7 @@ import Posts from "./pages/posts/Posts";
 import Albums from "./pages/albums/Albums";
 import Photos from "./pages/albums/Photos";
 import { useLoggedUser } from "./context/LoggedUserContext";
+import RegistrationLayout from "./components/RegistrationLayout";
 
 export default function AppRouter() {
     const { loggedUser } = useLoggedUser();
