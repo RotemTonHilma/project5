@@ -2,6 +2,7 @@ import { LoggedUserContext } from "../../context/LoggedUserContext";
 import { useContext, useState } from "react";
 import { useFetch } from "../../custom-hooks/useFetch";
 import { searchArr, chooseNextId, addItem, fetchGet } from "../../utils";
+import { updateDataBase } from "../../utils/utils";
 import Post from "./Post";
 
 export default function Posts() {
@@ -39,11 +40,10 @@ export default function Posts() {
         e.preventDefault();
         if (!newPost.title || !newPost.body) return;
 
-        const post = { ...newPost, userId: loggedUser.id }
-
         const nextId = chooseNextId(await fetchGet("http://localhost:3000/posts"));
-        const addPostResponse = await addItem("http://localhost:3000/posts", post, nextId);
-        if (!addPostResponse) return;
+
+        const post = { ...newPost, userId: loggedUser.id, id: nextId }
+        await updateDataBase("http://localhost:3000/posts", { method: "POST", body: post, headers: { "Content-Type": "application/json" } })
         setUserPosts(await fetchGet(`http://localhost:3000/posts?userId=${loggedUser.id}`));
     }
 

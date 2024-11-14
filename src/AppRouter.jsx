@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/login/Login";
 import Register from "./pages/login/Register";
 import RegDetails from "./pages/login/RegDetails";
@@ -23,10 +23,12 @@ export default function AppRouter() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route index element={<Login />} />
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-                <Route path="register/details" element={<RegDetails />} />
+                <Route path="/" element={<RegistrationLayout />}>
+                    <Route index element={<Navigate to="login" replace />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="register" element={<Register />} />
+                    <Route path="register/details" element={<RegDetails />} />
+                </Route>
 
                 <Route path="user/:userId" element={<ProtectedRoutes>{!loading ? <UserLayout /> : <h1>Loading...</h1>}</ProtectedRoutes>}>
                     <Route index element={<Home />} />
